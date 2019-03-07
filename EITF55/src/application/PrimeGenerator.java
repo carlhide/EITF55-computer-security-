@@ -19,12 +19,12 @@ public final class PrimeGenerator {
 
 	public static List<BigInteger> getPrimes(int amount, int bitSize, int iterations){
 
-
 		int count = 0;
 		int count2 = 0;
 		Random rand = new Random(Long.MAX_VALUE);
 		List<BigInteger> primes = new ArrayList<BigInteger>();
 		BigInteger test;
+		
 		while(count<amount && count2<(Math.pow(2, bitSize))) {
 			test = new BigInteger(bitSize, rand);
 			if(isRabinMiller(test, iterations) && !primes.contains(test)){
@@ -38,18 +38,19 @@ public final class PrimeGenerator {
 	}
 
 	public static boolean isRabinMiller(BigInteger n, int iterations) {
+		
 		if(n.compareTo(THREE)<=0) {
 			return false;
 		}
+		
 		if(n.mod(TWO).equals(ZERO)) {
 			return false;
 		}
-
+		
 		String[] firstBases = {"2047", "1373653", "25326001", "3215031751", "2152302898747", "3474749660383",
 				"341550071728321", "341550071728321"};
-
 		BigInteger rndBases[] = new BigInteger[iterations];
-
+		
 		for (int i = 0; i < rndBases.length; i++) {
 			if(i<firstBases.length) {
 				rndBases[i] = new BigInteger(firstBases[i]);
@@ -59,20 +60,19 @@ public final class PrimeGenerator {
 				while(rndBases[i].compareTo(n) > 0);
 			}
 		}
-
+		
 		BigInteger s = n.subtract(ONE);
-
 		int factors = 0;
+		
 		while(s.mod(TWO).equals(ZERO)) {
 			s = s.divide(TWO);
 			factors++;;
 		}
-
+		
 		int idx = 0;
+		
 		ProbablyPrime:
 			for (BigInteger rndBase = rndBases[idx]; idx < iterations; rndBase = rndBases[idx++]) {
-
-
 
 				BigInteger x = rndBase.modPow(s,n);
 				if(x.equals(ONE)||x.equals(n.subtract(ONE))){
@@ -109,6 +109,7 @@ public final class PrimeGenerator {
 			v2 = t2; 
 			d2 = t3;
 		}
+		
 		BigInteger v=v1;
 		BigInteger d=d1;
 		
@@ -140,7 +141,6 @@ public final class PrimeGenerator {
 			random = new BigInteger(max.bitLength(), new Random(Long.MAX_VALUE^System.nanoTime()));
 		while(random.compareTo(min) < 0 && random.compareTo(max)>0);
 		return random;
-		
 	}
 	
 	public static void RSA() {
@@ -154,16 +154,6 @@ public final class PrimeGenerator {
 		s = newRandBigInt(ONE, N);
 		c = s.modPow(e, N);
 		z = c.modPow(d, N);
-		
-		System.out.println("p: " + p);
-		System.out.println("q: " + q);
-		System.out.println("N: " + N);
-		System.out.println("temp: " + temp);
-		System.out.println("e: " + e);
-		System.out.println("d: " + d);
-		System.out.println("s: " + s);
-		System.out.println("c: " + c);
-		System.out.println("z: " + z);
 		
 		if(s.equals(z)) {
 			System.out.println("s==z");
